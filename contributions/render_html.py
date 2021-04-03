@@ -12,13 +12,12 @@ This module is responsible for preparing and rendering the templates.
 
 from collections import namedtuple
 import datetime
-#from types import StringTypes
 import ntpath
 
 from jinja2 import Environment, PackageLoader
 
 import contributions.dateutils as dateutils
-import contributions.parser as parser
+import contributions.contrib_parser as contrib_parser
 import contributions.statistics as statistics
 
 GridCell = namedtuple('GridCell', ['date', 'contributions'])
@@ -29,11 +28,12 @@ def create_graph(filepaths):
     Prepare the `index.html` template.
     """
     graphs = []
+    contributions = None
     if isinstance(filepaths, str):
         filepaths = [filepaths]
 
     for path in filepaths:
-        contributions = parser.parse_file(path)
+        contributions = contrib_parser.parse_file(path)
 
         graph = {
             "data": gridify_contributions(contributions),

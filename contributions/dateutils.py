@@ -63,6 +63,7 @@ def elapsed_time(date):
     else:
         return "more than a year ago"
 
+
 def weekday_initials():
     """
     Returns a list of abbreviations for the days of the week, starting with

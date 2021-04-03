@@ -10,7 +10,7 @@ import sys
 import unittest
 
 sys.path.append(os.getcwd())
-from contributions import parser
+from contributions import contrib_parser
 
 logging.disable(logging.CRITICAL)
 
@@ -28,7 +28,7 @@ class TestParserMethods(unittest.TestCase):
             "   # this is a commented line with leading whitespace"
         ]
         for line in EMPTY_LINES:
-            self.assertEqual(parser._parse_line(line), None)
+            self.assertEqual(contrib_parser._parse_line(line), None)
 
         INVALID_LINES = [
             "too many spaces",
@@ -37,23 +37,23 @@ class TestParserMethods(unittest.TestCase):
         ]
         for line in INVALID_LINES:
             with self.assertRaises(ValueError):
-                parser._parse_line(line)
+                contrib_parser._parse_line(line)
 
         VALID_LINES = {
             "2015-10-11 123": (datetime.date(2015, 10, 11), 123),
             "2016-11-9 18":   (datetime.date(2016, 11, 9), 18)
         }
         for line, output in VALID_LINES.iteritems():
-            self.assertEqual(parser._parse_line(line), output)
+            self.assertEqual(contrib_parser._parse_line(line), output)
 
     def test_parse_file(self):
         self.assertEqual(
-            parser._parse_file(_testfile("file1.txt")),
+            contrib_parser._parse_file(_testfile("file1.txt")),
             defaultdict(int)
         )
 
         self.assertEqual(
-            parser._parse_file(_testfile("file2.txt")),
+            contrib_parser._parse_file(_testfile("file2.txt")),
             defaultdict(int, {
                 datetime.date(2012, 10, 9): 123,
                 datetime.date(2012, 10, 8): 124
@@ -61,7 +61,7 @@ class TestParserMethods(unittest.TestCase):
         )
 
         self.assertEqual(
-            parser._parse_file(_testfile("file3.txt")),
+            contrib_parser._parse_file(_testfile("file3.txt")),
             defaultdict(int, {
                 datetime.date(2012, 10, 9): 246,
                 datetime.date(2012, 10, 8): 124
